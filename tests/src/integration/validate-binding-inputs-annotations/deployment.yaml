@@ -1,0 +1,48 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+project:
+    name: BindingTest
+    packages:
+        packagebinding:
+            inputs:
+                name: daisy
+                city: Beijing
+            actions:
+                helloworld:
+                    inputs:
+                        name: Amy
+                        place: Paris
+            triggers:
+                dbtrigger:
+                    inputs:
+                        dbname: cats
+                        docid: 1234567
+        packageBindingFromDeployment:
+            annotations:
+                package_annotation_1: this is a package annotation 1 from deployment
+                package_annotation_3: this is a package annotation 3 from deployment
+            actions:
+                helloworld:
+                    annotations:
+                        action_annotation_1: this is an action annotation 1 from deployment
+                        action_annotation_3: this is an action annotation 3 from deployment
+            triggers:
+                dbtrigger1:
+                    annotations:
+                        trigger_annotation_1: this is a trigger annotation 1 from deployment
+                        trigger_annotation_3: this is a trigger annotation 3 from deployment

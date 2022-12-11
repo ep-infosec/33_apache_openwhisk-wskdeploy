@@ -1,0 +1,65 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+packages:
+    validate:
+        actions:
+            validate_multiline_params:
+                function: actions/dump_params.js
+                runtime: nodejs:default
+                inputs:
+                    # value only
+                    param_string_value_only:
+                        value: foo
+                    param_int_value_only:
+                        value: 123
+                    param_float_value_only:
+                        value: 3.14
+                    # type and value only
+                    param_string_type_and_value_only:
+                        type: string
+                        value: foo
+                    param_json_type_and_value_only_1:
+                        type: json
+                        value: '{ "name": "Sam", "place": "Shire" }'
+                    param_json_type_and_value_only_2:
+                        type: json
+                        value: { "name": "${USERNAME}", "password": "${PASSWORD}" }
+                    param_json_type_and_value_only_3:
+                        type: json
+                        value: { "name": "$${USERNAME}", "password": "$${PASSWORD}" }
+                    # type only
+                    param_string_type_only:
+                        type: string
+                    param_integer_type_only:
+                        type: integer
+                    param_float_type_only:
+                        type: float
+                    # No value, but with default value
+                    param_string_with_default:
+                        type: string
+                        default: bar
+                    param_integer_with_default:
+                        type: integer
+                        default: -1
+                    param_float_with_default:
+                        type: float
+                        default: 2.9
+                outputs:
+                    payload:
+                        type: string
+                        description: parameter dump

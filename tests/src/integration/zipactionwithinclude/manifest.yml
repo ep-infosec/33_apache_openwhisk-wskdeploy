@@ -1,0 +1,77 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+packages:
+    zipactionwithinclude:
+        version: 1.0
+        license: Apache-2.0
+        actions:
+            greeting1:
+                function: actions/greeting1
+                runtime: nodejs:default
+                include:
+                    - []
+                    - ["actions/common/utils.js"]
+            greeting2:
+                function: actions/greeting2
+                runtime: nodejs:default
+                include:
+                    - ["actions/common/utils.js", "common/utils.js"]
+                    - ["actions/common/utils.js", "common/common1/utils.js"]
+                    - ["actions/common/utils.js", "common/common1/copyUtils.js"]
+            greeting3:
+                function: actions/greeting3
+                runtime: nodejs:default
+                include:
+                    - ["actions/common/", "common/"]
+                    - ["actions/common/", "common/common1/"]
+            greeting4:
+                function: actions/greeting4
+                runtime: nodejs:default
+                include:
+                    - ["actions/common/*.js", "common/"]
+            greeting5:
+                function: actions/greeting5
+                runtime: nodejs:default
+                include:
+                    - ["actions/common/utils.js", "./common/"]
+            greeting6:
+                function: actions/greeting6
+                runtime: nodejs:default
+                include:
+                    - ["actions/common/*.js"]
+            greeting7:
+                function: actions/greeting7
+                runtime: nodejs:default
+                include:
+                    - ["actions/libs/*", "libs/"]
+            greeting8:
+                function: actions/greeting8
+                runtime: nodejs:default
+                include:
+                    - ["actions/libs/*/utils.js", "libs/"]
+            greeting9:
+                function: actions/greeting9
+                runtime: nodejs:default
+                include:
+                    - ["actions/*/*/utils.js"]
+            greeting10:
+                function: actions/greeting10
+                runtime: nodejs:default
+                include:
+                    - ["actions/*/*/utils.js", "actions/"]
+

@@ -1,0 +1,66 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# This test file is used to test the basic Trigger-Action-Rule grammar
+packages:
+    manifest2:
+        version: 1.0
+        license: Apache-2.0
+        actions:
+            first_action:
+                description: Foo Bar 1
+                function: actions/dump_params.js
+            second_action:
+                description: Foo Bar 2
+                function: actions/dump_params.js
+            third_action:
+                function: actions/dump_params.js
+        triggers:
+            trigger1:
+            trigger2:
+        rules:
+            rule1:
+                description: Foo Bar 1
+                trigger: trigger1
+                action: first_action
+            rule3:
+                description: Foo Bar 2
+                trigger: trigger2
+                action: second_action
+            rule2:
+                trigger: trigger1
+                action: second_action
+        feeds:
+            feed1:
+            feed2:
+            feed3:
+            feed4:
+        apis:
+            book-club: #api name
+                club: # shared base path
+                    books:   #path
+                        getBooks: #action name:verb
+                            method: get
+                        postBooks:
+                            method: post
+                        putBooks:
+                            method: put
+                        deleteBooks:
+                            method: delete
+                    members: #path
+                        listMembers: #action name:verb
+                            method: get

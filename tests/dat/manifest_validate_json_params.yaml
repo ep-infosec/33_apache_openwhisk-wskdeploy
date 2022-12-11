@@ -1,0 +1,87 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+packages:
+  validate_json:
+    actions:
+      validate_json_params:
+        function: actions/dump_params.js
+        runtime: nodejs:default
+        inputs:
+          member1:
+            type: json
+            value: '{ "name": "Sam", "place": "Shire" }'
+          member2: { "name": "Sam", "place": "Shire" }
+          member3:
+            type: json
+            value: { "name": "Elrond", "place": "Rivendell" }
+          member4:
+            type: json
+            value: { "name": "Gimli", "place": "Gondor", "age": 139, "children": { "<none>": "<none>" } }
+          member5:
+            type: json
+            value: {
+              "name": "Gloin",
+              "place": "Gondor",
+              "age": 235,
+              "children": {
+                "Gimli": "Son"
+              }
+            }
+          member6:
+            type: json
+            value: { "name": "Frodo", "place": "Undying Lands", "items": [ "Sting", "Mithril mail" ] }
+          member7:
+            type: json
+            value: { "name": "${USERNAME}", "password": "${PASSWORD}" }
+          member8:
+            type: json
+            value: { "name": "$${USERNAME}", "password": "$${PASSWORD}" }
+          member9:
+            type: json
+            value: {
+              "data": {
+                "name": "$USERNAME",
+              }
+            }
+          member10:
+            type: json
+            value: {
+              "data": {
+                "auth": {
+                  "username": "$USERNAME",
+                  "password": "$PASSWORD"
+                }
+              }
+            }
+          member11:
+            type: json
+            value: {
+              "data": {
+                "auth": {
+                  "username": "$${USERNAME}",
+                  "password": "$${PASSWORD}"
+                }
+              }
+            }
+          member12: { "name": "${USERNAME}", "password": "${PASSWORD}" }
+          member13: { "data": { "name": "$USERNAME" } }
+          member14: { "data": { "name": { "username": "$USERNAME" } } }
+          member15: { "data": { "name": { "username": "$${USERNAME}" } } }
+        outputs:
+            fellowship:
+              type: json

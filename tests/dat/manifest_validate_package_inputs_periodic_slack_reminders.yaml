@@ -1,0 +1,99 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Deployment using this manifest file creates following OpenWhisk components:
+#   Package:    openwhisk-slack
+#   Package:    openwhisk-alarms
+#   Action:     send-message
+#   Sequence:   post_message_slack_sequence
+#   Trigger:    $TRIGGER_NAME
+#   Rule:       $RULE_NAME
+
+# This manifest file reads following env. variables:
+#   SLACK_WEBHOOK_URL
+#   ALARM_CRON
+#   PACKAGE_NAME
+#   TRIGGER_NAME
+#   RULE_NAME
+
+project:
+    namespace: _
+    inputs:
+        PACKAGE_NAME:
+            type: string
+            description: "Slack User Name"
+            required: false
+            value: periodic-slack-reminder
+        SLACK_WEBHOOK_URL:
+            type: string
+            description: "Slack Webhook URL"
+            required: true
+            value: $SLACK_WEBHOOK_URL
+        ALARM_CRON:
+            type: string
+            description: "Alarm Cron Frequency"
+            required: true
+            # every day 8 AM
+            value: "0 8 * * *"
+        TRIGGER_NAME:
+            type: string
+            description: "Trigger Name"
+            required: false
+            value: "periodic-slack-reminder-trgr"
+        RULE_NAME:
+            type: string
+            description: "Rule Name"
+            required: false
+            value: "post-to-slack-every-day"
+    packages:
+        $PACKAGE_NAME:
+            dependencies:
+                # binding alarms package named openwhisk-alarms and slack package openwhisk-slack
+                openwhisk-slack:
+                    location: /whisk.system/slack
+                    inputs:
+                        url: $SLACK_WEBHOOK_URL
+                openwhisk-alarms:
+                    location: /whisk.system/alarms
+                    inputs:
+                        cron: $ALARM_CRON
+            triggers:
+                # Creating trigger to fire events on alarm schedule
+                $TRIGGER_NAME:
+                    feed: openwhisk-alarms/alarm
+                    inputs:
+                        events: 'push'
+            actions:
+                # Creating action that is sending message to slack post action
+                send-message:
+                    code: |
+                              function main(params) {
+                                const message = 'Your scrum is starting now.  Time to find your team!';
+                                return { text: message };
+                              }
+                              exports.main = main;
+                    runtime: nodejs:default
+            sequences:
+                # Creating sequence to connect the send-message action with the slack post action
+                post_message_slack_sequence:
+                    actions: send-message, openwhisk-slack/post
+            rules:
+                # Creating rule that maps alarm trigger to sequence
+                $RULE_NAME:
+                    trigger: $TRIGGER_NAME
+                    action: post_message_slack_sequence
+
